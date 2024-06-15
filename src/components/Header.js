@@ -9,7 +9,7 @@ export const Header = () => {
   return (
     <header className={'header py-2'}>
       <nav className={'container d-flex justify-content-between'}>
-        <span className={'user'}>{user}</span>
+        <span className={'user'}>{user?.username}</span>
         <span className='ms-auto'>Logout</span>
       </nav>
     </header>
