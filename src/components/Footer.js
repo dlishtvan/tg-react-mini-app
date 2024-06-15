@@ -5,7 +5,7 @@ import {Button, ButtonGroup} from 'react-bootstrap';
 
 export const Footer = () => {
   return (
-    <footer className={'footer mt-auto pb-3'}>
+    <footer className={'footer mt-auto py-2'}>
       <div className={'container d-flex justify-content-center'}>
         <ButtonGroup aria-label="Basic example">
           <Button
