@@ -4,16 +4,16 @@ import {useDebounce} from '@uidotdev/usehooks';
 const {REACT_APP_FIREBASE_URL} = process.env;
 
 const Tapper = () => {
-  const [count, setCount] = useState(0);
-  const debouncedCount = useDebounce(count, 500);
+  const [taps, setTaps] = useState(0);
+  const debounceTaps = useDebounce(taps, 500);
 
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const taps = await fetch(`${REACT_APP_FIREBASE_URL}/data.json`);
-        const response = await taps.json();
+        const data = await fetch(`${REACT_APP_FIREBASE_URL}/data.json`);
+        const {taps} = await data.json();
 
-        setCount(response.taps);
+        setTaps(taps);
       } catch (error) {
         console.log('Error GET data:', error);
       }
@@ -24,33 +24,37 @@ const Tapper = () => {
 
   useEffect(() => {
     const searchHN = async () => {
-      if (!debouncedCount) {
+      if (!debounceTaps) {
         return;
       }
 
       try {
-        await fetch(`${REACT_APP_FIREBASE_URL}/data.json`, {
+        const data= await fetch(`${REACT_APP_FIREBASE_URL}/data.json`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json;charset=utf-8',
           },
-          body: JSON.stringify({taps: debouncedCount}),
+          body: JSON.stringify({taps: debounceTaps}),
         });
+
+        const {taps} = await data.json();
+
+        setTaps(taps);
       } catch (error) {
         console.log('Error PUT data:', error);
       }
     };
 
     searchHN();
-  }, [debouncedCount]);
+  }, [debounceTaps]);
 
   const onTap = () => {
-    setCount((count) => count + 1);
+    setTaps((count) => count + 1);
   };
 
   return (
     <>
-      <h1>Total Taps: {count}</h1>
+      <h1>Total Taps: {taps}</h1>
 
       <div
         className="img-wrapper"
