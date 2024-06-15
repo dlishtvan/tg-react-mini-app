@@ -10,7 +10,7 @@ export const Main = () => (
     {/* <Navbar/>*/}
     <Header/>
 
-    <main className={'container d-flex flex-column flex-grow-1'}>
+    <main className={'container d-flex flex-grow-1'}>
       <Outlet/>
     </main>
 
