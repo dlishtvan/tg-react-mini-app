@@ -1,12 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {scoresAPI} from '../features/scores/api/ScoresAPI';
+import {usersAPI} from '../features/users/api/UsersAPI';
 
 export const store = configureStore({
   reducer: {
-    [scoresAPI.reducerPath]: scoresAPI.reducer,
+    [usersAPI.reducerPath]: usersAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(scoresAPI.middleware),
+    getDefaultMiddleware().concat(usersAPI.middleware),
 });
 
 export default store;
