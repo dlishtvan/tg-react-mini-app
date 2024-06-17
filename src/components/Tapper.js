@@ -45,7 +45,7 @@ const Tapper = () => {
     };
 
     updateScore();
-  }, [debounceScore]);
+  }, [debounceScore, updateUser, user]);
 
   const onClick = () => {
     setScores((count) => count + 1);
