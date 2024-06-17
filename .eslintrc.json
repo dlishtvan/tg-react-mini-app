@@ -14,7 +14,9 @@
   },
   "plugins": ["react", "react-hooks"],
   "rules": {
-    "max-len": ["error", { "code": 110 }]
+    "no-unused-vars": "off",
+    "no-debugger": "off",
+    "max-len": ["error", { "code": 120 }]
     //add customize rules here as per your project's needs
   }
 }

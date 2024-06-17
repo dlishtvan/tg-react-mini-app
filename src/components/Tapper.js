@@ -1,64 +1,63 @@
 import React, {useEffect, useState} from 'react';
 import {useDebounce} from '@uidotdev/usehooks';
+import {useUpdateUserMutation, useGetUserByUsernameQuery} from '../features/users/api/UsersAPI';
+
+import {useTelegram} from '../hooks/useTelegram';
 
 const {REACT_APP_FIREBASE_URL} = process.env;
 
 const Tapper = () => {
-  const [taps, setTaps] = useState(0);
-  const debounceTaps = useDebounce(taps, 500);
+  const {user} = useTelegram();
+  const {data, error, isLoading} = useGetUserByUsernameQuery(user.username);
+  const [updateUser, {isLoading: isCreating, error: createError}] = useUpdateUserMutation();
+  const [scores, setScores] = useState(0);
+  const debounceScore = useDebounce(scores, 500);
 
   useEffect(() => {
-    const fetchCount = async () => {
-      try {
-        const data = await fetch(`${REACT_APP_FIREBASE_URL}/data.json`);
-        const {taps} = await data.json();
-
-        setTaps(taps);
-      } catch (error) {
-        console.log('Error GET data:', error);
-      }
-    };
-
-    fetchCount();
-  }, []);
+    if (data) {
+      setScores(data.scores);
+    }
+  }, [data]);
 
   useEffect(() => {
-    const searchHN = async () => {
-      if (!debounceTaps) {
+    const updateScore = async () => {
+      if (!debounceScore) {
         return;
       }
-
+      console.log(user, 'USER');
       try {
-        const data= await fetch(`${REACT_APP_FIREBASE_URL}/data.json`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-          },
-          body: JSON.stringify({taps: debounceTaps}),
-        });
+        // const data= await fetch(`${REACT_APP_FIREBASE_URL}/users/dlishtvan.json`, {
+        //   method: 'PUT',
+        //   headers: {
+        //     'Content-Type': 'application/json;charset=utf-8',
+        //   },
+        //   body: JSON.stringify({taps: debounceScore}),
+        // });
 
-        const {taps} = await data.json();
+        const qq = await updateUser({username: user.username, body: {}}).unwrap();
+        console.log(await qq.json(), 'QQ');
+        // const {scores} = await data.json();
 
-        setTaps(taps);
+        // setScores(scores);
       } catch (error) {
         console.log('Error PUT data:', error);
       }
     };
 
-    searchHN();
-  }, [debounceTaps]);
+    updateScore();
+  }, [debounceScore]);
 
-  const onTap = () => {
-    setTaps((count) => count + 1);
+  const onClick = () => {
+    setScores((count) => count + 1);
   };
 
   return (
     <>
-      <h1>Total Taps: {taps}</h1>
+      <h1>Total Taps: {scores}</h1>
 
       <div
         className="img-wrapper"
-        onClick={onTap}
+        onClick={onClick}
       >
         <img
           src={'./pngtree-hamster-png-with-ai-generated-png-image_11563624.png'}

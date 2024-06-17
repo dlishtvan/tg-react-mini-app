@@ -9,12 +9,22 @@ export const usersAPI = createApi({
     getUsers: builder.query({
       query: () => 'users.json',
     }),
-    getUserById: builder.query({
-      query: (userName) => `users/${userName}.json`,
+    getUserByUsername: builder.query({
+      query: (username) => `users/${username}.json`,
     }),
     addUser: builder.mutation({
-      query: ({userName, body}) => ({
-        url: `${REACT_APP_FIREBASE_URL}/users/${userName}.json`,
+      query: ({username, body}) => ({
+        url: `${REACT_APP_FIREBASE_URL}/users/${username}.json`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+        body: JSON.stringify(body),
+      }),
+    }),
+    updateUser: builder.mutation({
+      query: ({username, body}) => ({
+        url: `${REACT_APP_FIREBASE_URL}/users/${username}.json`,
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
@@ -25,4 +35,4 @@ export const usersAPI = createApi({
   }),
 });
 
-export const {useGetUsersQuery, useGetUserByIdQuery, useAddUserMutation} = usersAPI;
+export const {useGetUsersQuery, useGetUserByUsernameQuery, useAddUserMutation, useUpdateUserMutation} = usersAPI;

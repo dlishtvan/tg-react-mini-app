@@ -9,7 +9,6 @@ import {usersAPI} from '../features/users/api/UsersAPI';
 
 export const Main = () => {
   const {user} = useTelegram();
-  const userName = user?.username || 'test';
   const [error, setError] = useState(null);
   const [addUser, {isLoading: isCreating, error: createError}] = useAddUserMutation();
 
@@ -17,16 +16,16 @@ export const Main = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      if (!userName) return;
+      if (!user.username) return;
 
       // setLoading(true);
       // setError(null);
 
       try {
-        const data = await dispatch(usersAPI.endpoints.getUserById.initiate(userName)).unwrap();
+        const data = await dispatch(usersAPI.endpoints.getUserByUsername.initiate(user.username)).unwrap();
 
         if (!data) {
-          const createdUser = await addUser({userName, body: {scores: 0}}).unwrap();
+          const createdUser = await addUser({username: user.username, body: {...user, scores: 0}}).unwrap();
           // setUser(createdUser);
           console.log('User created:', createdUser);
         } else {
@@ -42,7 +41,7 @@ export const Main = () => {
     };
 
     fetchUser();
-  }, [dispatch, userName, addUser]);
+  }, [dispatch, user, addUser]);
 
   return (
     <>
