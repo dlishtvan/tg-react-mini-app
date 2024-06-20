@@ -1,19 +1,14 @@
 import React from 'react';
 import {ProgressBar as Progress} from 'react-bootstrap';
-import {useGetUserByUsernameQuery} from '../features/users/api/UsersAPI';
-import {useTelegram} from '../hooks/useTelegram';
+import {useSelector} from 'react-redux';
 
 const ProgressBar = () => {
-  const {user} = useTelegram();
-  const {data, error, isLoading} = useGetUserByUsernameQuery(user.username);
-
-  if (isLoading) {
-    return <>IsLoading</>;
-  }
+  const {scores} = useSelector((state) => state.user.data);
 
   return (
     <>
-      <Progress now={data.scores} max={1000} label={`${data.scores}`}/>
+      <p className={'m-0 text-end'}><small>Level 1/10</small></p>
+      <Progress now={scores} max={1000} label={`${(100 * scores) / 1000}%`}/>
     </>
   );
 };

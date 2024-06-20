@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 import {ROUTES} from '../router/routerConfig';
 import {Button, ButtonGroup} from 'react-bootstrap';
 
-export const Footer = () => {
+const Footer = () => {
   return (
     <footer className={'footer mt-auto py-2'}>
       <div className={'container d-flex justify-content-center'}>
@@ -32,3 +32,5 @@ export const Footer = () => {
     </footer>
   );
 };
+
+export default Footer;

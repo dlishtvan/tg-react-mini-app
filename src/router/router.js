@@ -2,13 +2,10 @@ import React from 'react';
 import {createBrowserRouter} from 'react-router-dom';
 import {ROUTES} from './routerConfig';
 
-import {Root} from '../layouts/Root';
-import {Main} from '../layouts/Main';
-// import {Todos} from "../pages/Todos";
-// import {About} from "../pages/About";
-import {Empty} from '../layouts/Empty';
-// import {Toast} from "../components/Toast";
-// import { isRouteErrorResponse } from "react-router-dom";
+import {Root} from '../components/layouts/Root';
+import {Main} from '../components/layouts/Main';
+import {Empty} from '../components/layouts/Empty';
+import userLoader from './loaders/userLoader';
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +14,7 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <Main/>,
+        loader: userLoader,
         children: [
           {
             index: true,
