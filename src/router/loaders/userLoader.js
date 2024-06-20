@@ -5,7 +5,6 @@ const userLoader = async ({params}) => {
   const {dispatch} = store;
   const {user} = store.getState();
   const id = user.dataTG.id;
-  console.log(store.getState());
 
   try {
     const data = await dispatch(fetchUserById(id));

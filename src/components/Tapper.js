@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateUser} from '../features/user/userAPI';
 import {incrementScores} from '../features/user/userSlice';
@@ -9,9 +9,10 @@ const Tapper = () => {
   const {id} = useSelector((state) => state.user.dataTG);
   const {data} = useSelector((state) => state.user);
 
-  const updateHandles = useCallback(debounce((data) => {
-    dispatch(updateUser({id, payload: {...data}}));
-  }, 1000), [id]);
+  const updateHandles = useMemo(() => debounce((data) => {
+    dispatch(updateUser({id, payload: data}));
+  }, 1000),
+  [id, dispatch]);
 
   const onClick = () => {
     dispatch(incrementScores(1));
