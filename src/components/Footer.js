@@ -2,6 +2,7 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {ROUTES} from '../router/routerConfig';
 import {Button, ButtonGroup} from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 const Footer = () => {
   return (
@@ -12,12 +13,16 @@ const Footer = () => {
             as={NavLink}
             to={ROUTES.Root}
             variant="outline-primary"
-          >Home</Button>
+          >
+            <FontAwesomeIcon icon={'house-user'} className={'me-1'}/>
+            Home
+          </Button>
           <Button
             as={NavLink}
             to={ROUTES.Statistic}
             variant="outline-primary"
           >
+            <FontAwesomeIcon icon={'chart-simple'} className={'me-1'}/>
             Statistic
           </Button>
           <Button
@@ -25,6 +30,7 @@ const Footer = () => {
             to={ROUTES.LeadersBoard}
             variant="outline-primary"
           >
+            <FontAwesomeIcon icon={'trophy'} className={'me-1'}/>
             Leaders Board
           </Button>
         </ButtonGroup>

@@ -6,6 +6,10 @@ import {RouterProvider} from 'react-router-dom';
 import {router} from './router/router';
 import {store} from './app/store';
 import {Provider} from 'react-redux';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+
+library.add(fas);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
