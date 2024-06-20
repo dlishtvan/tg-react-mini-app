@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 
 const Header = () => {
   const {username} = useSelector((state) => state.user.data);
-  // debugger;
+
   return (
     <header className={'header py-2'}>
       <nav className={'container d-flex justify-content-between'}>

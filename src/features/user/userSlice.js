@@ -7,11 +7,9 @@ const userSlice = createSlice({
   initialState: {
     dataTG: tg.initDataUnsafe?.user || {
       id: 'testuser',
+      username: 'testuser',
     },
-    data: {
-      username: 'defaultUsername',
-      scores: 0,
-    },
+    data: {},
     status: 'idle',
     error: null,
     isLoading: true,
