@@ -3,6 +3,19 @@ import axios from 'axios';
 
 const {REACT_APP_FIREBASE_URL} = process.env;
 
+const fetchUsers = createAsyncThunk(
+    'user/fetchUsers',
+    async (_, thunkAPI) => {
+      try {
+        const response = await axios.get(`${REACT_APP_FIREBASE_URL}/users.json`);
+
+        return response.data;
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    },
+);
+
 const fetchUserById = createAsyncThunk(
     'user/fetchUserById',
     async (id, thunkAPI) => {
@@ -42,4 +55,4 @@ const updateUser = createAsyncThunk(
     },
 );
 
-export {fetchUserById, addUser, updateUser};
+export {fetchUsers, fetchUserById, addUser, updateUser};

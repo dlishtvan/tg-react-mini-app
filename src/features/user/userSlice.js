@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {addUser, fetchUserById, updateUser} from './userAPI';
+import {fetchUsers, fetchUserById, addUser, updateUser} from './userAPI';
 const tg = window.Telegram.WebApp;
 
 const userSlice = createSlice({
@@ -10,6 +10,7 @@ const userSlice = createSlice({
       username: 'testuser',
     },
     data: {},
+    list: [],
     status: 'idle',
     error: null,
     isLoading: true,
@@ -21,6 +22,21 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+        // fetchUsers
+        .addCase(fetchUsers.pending, (state) => {
+          state.isLoading = true;
+          state.error = null;
+        })
+        .addCase(fetchUsers.fulfilled, (state, action) => {
+          state.isLoading = false;
+
+          state.list = Object.values(action.payload).sort((a, b) => b.scores - a.scores);
+        })
+        .addCase(fetchUsers.rejected, (state, action) => {
+          state.isLoading = false;
+          state.error = action.error.message;
+        })
+
         // fetchUserById
         .addCase(fetchUserById.pending, (state) => {
           state.isLoading = true;

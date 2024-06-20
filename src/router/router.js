@@ -6,6 +6,7 @@ import {Root} from '../components/layouts/Root';
 import {Main} from '../components/layouts/Main';
 import {Empty} from '../components/layouts/Empty';
 import userLoader from './loaders/userLoader';
+import usersLoader from './loaders/usersLoader';
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
           },
           {
             path: ROUTES.LeadersBoard,
+            loader: usersLoader,
             async lazy() {
               const {LeadersBoard} = await import('../pages/LeadersBoard');
               return {Component: LeadersBoard};
