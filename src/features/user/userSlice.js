@@ -41,7 +41,7 @@ const userSlice = createSlice({
         .addCase(fetchUsers.fulfilled, (state, action) => {
           state.isLoading = false;
           state.status = STATUSES.FULFILLED;
-          state.list = Object.values(action.payload).sort((a, b) => b.scores.total - a.scores.total);
+          state.list = Object.values(action.payload).sort((a, b) => b.totalScores - a.totalScores);
         })
         .addCase(fetchUsers.rejected, (state, action) => {
           state.isLoading = false;
