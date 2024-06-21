@@ -43,7 +43,7 @@ export const LeadersBoard = () => {
                     {item.username}</div>
                 </div>
                 <Badge bg="primary" pill>
-                  {item.scores}
+                  {item.scores.total}
                 </Badge>
               </ListGroup.Item>
             );

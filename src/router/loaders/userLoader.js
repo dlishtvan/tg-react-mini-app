@@ -10,7 +10,17 @@ const userLoader = async ({params}) => {
     const data = await dispatch(fetchUserById(id));
 
     if (!data || !data.payload) {
-      await dispatch(addUser({id, payload: {id, username, scores: 0}}));
+      const payload = {
+        id,
+        username,
+        level: {
+          current: 1,
+          scores: 0,
+        },
+        totalScores: 0,
+      };
+
+      await dispatch(addUser({id, payload}));
     }
   } catch (err) {
     console.error('Error fetching or creating user:', err);

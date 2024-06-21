@@ -1,6 +1,6 @@
 import React from 'react';
 import Tapper from '../components/Tapper';
-import ProgressBar from '../components/ProgressBar';
+import ProgressBar from '../components/levels/ProgressBar';
 
 export const Home = () => {
   return (
