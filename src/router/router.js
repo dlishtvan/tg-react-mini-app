@@ -26,10 +26,10 @@ export const router = createBrowserRouter([
 
           },
           {
-            path: ROUTES.Statistic,
+            path: ROUTES.Mine,
             async lazy() {
-              const {Statistic} = await import('../pages/Statistic');
-              return {Component: Statistic};
+              const {Mine} = await import('../pages/Mine');
+              return {Component: Mine};
             },
           },
           {
