@@ -1,5 +1,5 @@
-import store from '../../../app/store';
-import {fetchBrands} from '../../../features/mine/mineAPI';
+import store from '../../app/store';
+import {fetchBrands} from '../../features/mine/mineAPI';
 
 const mineLoader = async () => {
   const {dispatch} = store;

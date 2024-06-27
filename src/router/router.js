@@ -5,9 +5,10 @@ import {ROUTES} from './routerConfig';
 import {Root} from '../components/layouts/Root';
 import {Main} from '../components/layouts/Main';
 import {Empty} from '../components/layouts/Empty';
+
 import userLoader from './loaders/userLoader';
 import usersLoader from './loaders/usersLoader';
-import mineLoader from './loaders/mine/mineLoader';
+import mineLoader from './loaders/mineLoader';
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,13 @@ export const router = createBrowserRouter([
               return {Component: Home};
             },
 
+          },
+          {
+            path: ROUTES.Statistic,
+            async lazy() {
+              const {Statistic} = await import('../pages/Statistic');
+              return {Component: Statistic};
+            },
           },
           {
             path: ROUTES.Mine,

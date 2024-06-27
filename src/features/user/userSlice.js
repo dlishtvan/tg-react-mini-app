@@ -30,7 +30,7 @@ const userSlice = createSlice({
     incrementLevelScores: (state, {payload}) => {
       state.data.level.scores += payload;
     },
-    incrementNeveLevel: (state) => {
+    incrementNewLevel: (state) => {
       state.data.level.current += 1;
     },
     resetLevelScores: (state) => {
@@ -125,7 +125,7 @@ export const {
   decrementTotalScores,
   incrementTotalScores,
   incrementLevelScores,
-  incrementNeveLevel,
+  incrementNewLevel,
   resetLevelScores,
   addMineByType,
   updateMine,
