@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {fetchUsers, fetchUserById, addUser, updateUser} from './userAPI';
 import STATUSES from '../../configs/statuses';
+import {set} from 'lodash';
 const tg = window.Telegram.WebApp;
 
 const userSlice = createSlice({
@@ -17,6 +18,12 @@ const userSlice = createSlice({
     isLoading: true,
   },
   reducers: {
+    incrementScoresPerTap: (state, {payload}) => {
+      state.data.scoresPerTap += payload;
+    },
+    decrementTotalScores: (state, {payload}) => {
+      state.data.totalScores -= payload;
+    },
     incrementTotalScores: (state, {payload}) => {
       state.data.totalScores += payload;
     },
@@ -28,6 +35,14 @@ const userSlice = createSlice({
     },
     resetLevelScores: (state) => {
       state.data.level.scores = 0;
+    },
+
+    // Note: mine
+    addMineByType(state, {payload}) {
+      set(state.data, `mine.${payload.type}.${payload.data.id}`, payload.data);
+    },
+    updateMine(state, {payload}) {
+      set(state.data, `mine.${payload.type}.${payload.data.id}`, payload.data);
     },
   },
   extraReducers: (builder) => {
@@ -106,10 +121,14 @@ const userSlice = createSlice({
 });
 
 export const {
+  incrementScoresPerTap,
+  decrementTotalScores,
   incrementTotalScores,
   incrementLevelScores,
   incrementNeveLevel,
   resetLevelScores,
+  addMineByType,
+  updateMine,
 } = userSlice.actions;
 
 export default userSlice.reducer;

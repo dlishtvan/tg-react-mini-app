@@ -7,6 +7,7 @@ import {Main} from '../components/layouts/Main';
 import {Empty} from '../components/layouts/Empty';
 import userLoader from './loaders/userLoader';
 import usersLoader from './loaders/usersLoader';
+import mineLoader from './loaders/mine/mineLoader';
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
           },
           {
             path: ROUTES.Mine,
+            loader: mineLoader,
             async lazy() {
               const {Mine} = await import('../pages/Mine');
               return {Component: Mine};

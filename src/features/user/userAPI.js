@@ -44,9 +44,12 @@ const addUser = createAsyncThunk(
 
 const updateUser = createAsyncThunk(
     'user/updateUser',
-    async ({id, payload}, thunkAPI) => {
+    async (payload, thunkAPI) => {
       try {
-        const response = await axios.put(`${REACT_APP_FIREBASE_URL}/users/${id}.json`, payload);
+        const {id} = thunkAPI.getState().user.dataTG;
+        const data = payload || thunkAPI.getState().user.data;
+
+        const response = await axios.put(`${REACT_APP_FIREBASE_URL}/users/${id}.json`, data);
 
         return response.data;
       } catch (error) {

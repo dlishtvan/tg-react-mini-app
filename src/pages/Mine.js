@@ -1,49 +1,66 @@
-import React from 'react';
-import {Button, Card, CardGroup, Col, Container, Row} from 'react-bootstrap';
+import React, {useCallback, useMemo} from 'react';
+import generateId from '../utils/generateId';
+import {Button, Card, Col, Row} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {useSelector} from 'react-redux';
-
-const cards = [
-  {
-    id: 1,
-    icon: 'linkedin',
-    title: 'LinkedIn',
-    lvl: 0,
-    perTap: 1,
-    price: 100,
-  },
-  {
-    id: 2,
-    icon: 'youtube',
-    title: 'Youtube',
-    perTap: 2,
-    lvl: 0,
-    price: 200,
-  },
-  {
-    id: 3,
-    icon: 'apple',
-    title: 'Apple',
-    perTap: 3,
-    lvl: 0,
-    price: 300,
-  },
-  {
-    id: 4,
-    icon: 'fa-square-x-twitter',
-    title: 'X',
-    perTap: 4,
-    lvl: 0,
-    price: 400,
-  },
-];
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  incrementScoresPerTap,
+  decrementTotalScores,
+  addMineByType,
+  updateMine,
+} from '../features/user/userSlice';
+import {find} from 'lodash';
+import {updateUser} from '../features/user/userAPI';
 
 export const Mine = () => {
   const {data} = useSelector((state) => state.user);
+  const {types: brandTypes} = useSelector((state) => state.mine.brands);
+  const dispatch = useDispatch();
 
-  const handleClick = (card) => {
-    debugger;
+  const handleClick = (brandType) => {
+    const existingBrand = getUserBrandByTypeId(brandType.configId);
+
+    if (!existingBrand) {
+      dispatch(addMineByType({
+        type: 'brands', data: {
+          perTap: brandType.perTap,
+          configId: brandType.id,
+          lvl: 1,
+          price: brandType.price,
+          id: generateId(),
+        },
+      }));
+    } else {
+      const newLvl = existingBrand.lvl + 1;
+
+      const updatedBrand = {
+        ...existingBrand,
+        lvl: newLvl,
+        price: existingBrand.price * newLvl,
+      };
+
+      dispatch(updateMine({type: 'brands', data: updatedBrand}));
+    }
+
+    dispatch(incrementScoresPerTap(brandType.perTap));
+    dispatch(decrementTotalScores(brandType.price));
+
+    dispatch(updateUser());
   };
+
+  const getUserBrandByTypeId = useCallback((id) => {
+    return find(data?.mine?.brands, (brand) => brand.configId === id);
+  }, [data]);
+
+  const localBrands = useMemo(() => {
+    return brandTypes.map((brandType) => {
+      const brand = getUserBrandByTypeId(brandType.id) || {lvl: 0};
+      return {
+        ...brandType,
+        ...brand,
+      };
+    });
+  }, [brandTypes, getUserBrandByTypeId]);
 
   return (
     <div className={'align-self-start flex-fill'}>
@@ -62,31 +79,33 @@ export const Mine = () => {
         className="g-2 flex-fill"
         xs={2}
       >
-        {cards.map((card) => (
-          <Col key={card.id}>
+        {localBrands.map((brand) => (
+          <Col key={brand.id}>
             <Card className="h-100">
-              <Row className="g-0">
+              <Row className="g-0 flex-grow-1">
                 <Col xs={4}>
-                  <div className="d-flex h-100 justify-content-center align-items-center">
+                  <div className="d-flex h-100 justify-content-center align-items-center flex-column">
                     <FontAwesomeIcon
-                      icon={['fab', card.icon]}
+                      icon={['fab', brand.icon]}
                       size="2x"
                     />
+                    <p className={'m-0'}>
+                      <small>lvl {brand.lvl}</small>
+                    </p>
                   </div>
                 </Col>
 
                 <Col>
                   <Card.Body className="d-flex flex-column h-100">
-                    <Card.Title>{card.title}</Card.Title>
+                    <Card.Title>{brand.title}</Card.Title>
 
                     <Card.Text>
-                      <p>
-                        <FontAwesomeIcon
-                          icon={'bolt'}
-                          className={'me-1 text-warning'}
-                        />
-                        +{card.perTap} per tap
-                      </p>
+                      <FontAwesomeIcon
+                        icon={'bolt'}
+                        className={'me-1 text-warning'}
+                      />
+
+                      +{brand.perTap} per tap
                     </Card.Text>
                   </Card.Body>
                 </Col>
@@ -97,14 +116,15 @@ export const Mine = () => {
                   <Card.Footer className={'text-center'}>
                     <Button
                       variant={'success'}
-                      disabled={card.price > data.totalScores}
-                      onClick={() => handleClick(card)}
+                      disabled={brand.price > data.totalScores}
+                      onClick={() => handleClick(brand)}
                     >
                       <FontAwesomeIcon
                         icon={'coins'}
                         className={'me-1'}
                       />
-                      {card.price}
+
+                      {brand.price}
                     </Button>
                   </Card.Footer>
                 </Col>

@@ -18,6 +18,7 @@ const userLoader = async ({params}) => {
           scores: 0,
         },
         totalScores: 0,
+        scoresPerTap: 1,
       };
 
       await dispatch(addUser({id, payload}));
