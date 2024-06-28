@@ -47,9 +47,19 @@ const updateUser = createAsyncThunk(
     async (payload, thunkAPI) => {
       try {
         const {id} = thunkAPI.getState().user.dataTG;
-        const data = payload || thunkAPI.getState().user.data;
+        const currentStateData = thunkAPI.getState().user.data;
+        const data = payload || currentStateData;
 
         const response = await axios.put(`${REACT_APP_FIREBASE_URL}/users/${id}.json`, data);
+        const updatedStateData = thunkAPI.getState().user.data;
+
+        // NOTE Check if the data has changed since the request was sent
+        if (JSON.stringify(updatedStateData) !== JSON.stringify(data)) {
+          // NOTE If changed, send a repeat PUT request
+          await axios.put(`${REACT_APP_FIREBASE_URL}/users/${id}.json`, updatedStateData);
+
+          return updatedStateData;
+        }
 
         return response.data;
       } catch (error) {
