@@ -1,0 +1,19 @@
+/* FloatingNumber.css */
+.floating-scores {
+  position: absolute;
+  font-size: 20px;
+  font-weight: bold;
+  //color: red;
+  animation: float 1s ease-out forwards;
+}
+
+@keyframes float {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
