@@ -15,25 +15,31 @@ import './Tapper.scss';
 const Tapper = () => {
   const dispatch = useDispatch();
   const {data} = useSelector((state) => state.user);
-  const [tilt, setTilt] = useState({x: 0, y: 0});
-  const [numbers, setNumbers] = useState([]);
+  const [floatingScores, setFloatingScores] = useState([]);
+
   const updateHandles = useMemo(() => debounce(() => {
     dispatch(updateUser());
   }, 500), [dispatch]);
 
   const handleTouchStart = (e) => {
-    e.preventDefault();
     const touch = e.touches ? e.touches[0] : e;
     const {clientX, clientY, target} = touch;
     const {left, top, width, height} = target.getBoundingClientRect();
 
-    const x = ((clientX - left) / width - 0.5) * 40; // наклон по оси X
-    const y = ((clientY - top) / height - 0.5) * 40; // наклон по оси Y
 
-    setTilt({x, y});
+    const {offsetLeft, offsetTop} = e.target; // Позиция элемента
+    const x = clientX - offsetLeft; // Координата X относительно элемента
+    const y = clientY - offsetTop; // Координата Y относительно элемента
 
-    const newNumber = {id: Date.now(), number: data.scoresPerTap, x: clientX - left, y: clientY - top};
-    setNumbers([...numbers, newNumber]);
+    const floatingScore = {
+      id: Date.now(), number: data.scoresPerTap, x: clientX - left, y: clientY - top,
+    };
+
+    setFloatingScores((prevFloatingScores) => [...prevFloatingScores, floatingScore]);
+  };
+
+  const handleAnimationEnd = (id) => {
+    setFloatingScores((prevScores) => prevScores.filter((score) => score.id !== id));
   };
 
   const handleTouchEnd = () => {
@@ -49,12 +55,6 @@ const Tapper = () => {
     }
 
     updateHandles();
-
-    setTilt({x: 0, y: 0});
-  };
-
-  const handleAnimationEnd = (id) => {
-    setNumbers(numbers.filter((number) => number.id !== id));
   };
 
   return (
@@ -64,7 +64,6 @@ const Tapper = () => {
       <div className={'position-relative'}>
         <div
           className="tapper"
-          style={{transform: `rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`}}
           onTouchStart={(e) => handleTouchStart(e)}
           onTouchEnd={handleTouchEnd}
         >
@@ -75,7 +74,7 @@ const Tapper = () => {
           />
         </div>
 
-        {numbers.map(({id, number, x, y}) => (
+        {floatingScores.map(({id, number, x, y}) => (
           <FloatingScores
             key={id}
             number={number}
