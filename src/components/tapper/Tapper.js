@@ -53,7 +53,7 @@ const Tapper = () => {
 
 
     setTilt({rotateX, rotateY});
-``
+
     const floatingScore = {
       id: Date.now(), number: data.scoresPerTap, x: clientX - left, y: clientY - top,
     };
