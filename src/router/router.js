@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
             path: ROUTES.Mine,
             loader: mineLoader,
             async lazy() {
-              const {Mine} = await import('../pages/Mine');
+              const {Mine} = await import('../pages/mine/Mine');
               return {Component: Mine};
             },
           },
