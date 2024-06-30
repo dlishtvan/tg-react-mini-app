@@ -11,11 +11,13 @@ import LEVELS_CONFIG from '../levels/levelsConfig';
 import {debounce} from 'lodash';
 import FloatingScores from './FloatingScores';
 import './Tapper.scss';
+import UserBalance from '../userBalance/UserBalance';
 
 const Tapper = () => {
   const dispatch = useDispatch();
   const {data} = useSelector((state) => state.user);
   const [floatingScores, setFloatingScores] = useState([]);
+  const [tilt, setTilt] = useState({rotateX: 0, rotateY: 0});
 
   const updateHandles = useMemo(() => debounce(() => {
     dispatch(updateUser());
@@ -26,11 +28,32 @@ const Tapper = () => {
     const {clientX, clientY, target} = touch;
     const {left, top, width, height} = target.getBoundingClientRect();
 
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
 
-    const {offsetLeft, offsetTop} = e.target; // Позиция элемента
-    const x = clientX - offsetLeft; // Координата X относительно элемента
-    const y = clientY - offsetTop; // Координата Y относительно элемента
+    // center distance by x/y axis
+    const distanceX = Math.abs(clientX - centerX);
+    const distanceY = Math.abs(clientY - centerY);
+    const maxDistance = Math.min(width, height) / 2; // Max distance to the center
 
+    let rotateX = 0;
+    let rotateY = 0;
+
+    if (clientY < centerY && distanceY > maxDistance / 2) {
+      rotateX = -11; // top side tilt
+    } else if (clientY >= centerY && distanceY > maxDistance / 2) {
+      rotateX = 11; // bottom side tilt
+    }
+
+    if (clientX < centerX && distanceX > maxDistance / 2) {
+      rotateY = -11; // left side tilt
+    } else if (clientX > centerX && distanceX > maxDistance / 2) {
+      rotateY = 11; // right side tilt
+    }
+
+
+    setTilt({rotateX, rotateY});
+``
     const floatingScore = {
       id: Date.now(), number: data.scoresPerTap, x: clientX - left, y: clientY - top,
     };
@@ -54,16 +77,21 @@ const Tapper = () => {
       dispatch(resetLevelScores());
     }
 
+    setTilt({rotateX: 0, rotateY: 0});
+
     updateHandles();
   };
 
   return (
     <>
-      <h1>Total Taps: {data.totalScores}</h1>
+      <UserBalance/>
 
       <div className={'position-relative'}>
-        <div
+        <button
           className="tapper"
+          style={{
+            transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
+          }}
           onTouchStart={(e) => handleTouchStart(e)}
           onTouchEnd={handleTouchEnd}
         >
@@ -72,7 +100,7 @@ const Tapper = () => {
             className="img"
             alt="logo"
           />
-        </div>
+        </button>
 
         {floatingScores.map(({id, number, x, y}) => (
           <FloatingScores

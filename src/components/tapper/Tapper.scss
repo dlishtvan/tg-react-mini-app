@@ -1,11 +1,13 @@
-.tapper{
+.tapper {
   width: 200px;
   height: 200px;
   overflow: hidden;
-  transition: transform 0.3s ease;
-  border-radius: 50%; /* Makes it a circle */
-  border: 5px solid transparent; /* Border width and style */
+  transition: rotate 1s ease;
+  border-radius: 50%;
+  border: 5px solid transparent;
   background: linear-gradient(180deg, #FFE32C, #52ACFF) border-box;
+  padding: 0;
+  box-shadow: 0 0 15px #56adfc;
 
   .img {
     width: 100%;
