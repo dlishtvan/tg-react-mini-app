@@ -7,6 +7,8 @@ export const Root = () => {
 
   useEffect(() => {
     tg.ready();
+
+    tg.expand();
   }, [tg]);
 
   return (
