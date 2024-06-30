@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo} from 'react';
-import generateId from '../utils/generateId';
+import generateId from '../../utils/generateId';
 import {Button, Card, Col, Row} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useSelector, useDispatch} from 'react-redux';
@@ -8,9 +8,12 @@ import {
   decrementTotalScores,
   addMineByType,
   updateMine,
-} from '../features/user/userSlice';
+} from '../../features/user/userSlice';
 import {find} from 'lodash';
-import {updateUser} from '../features/user/userAPI';
+import {updateUser} from '../../features/user/userAPI';
+import IMAGES from '../../configs/base64Images';
+import './Mine.scss';
+import UserBalance from '../../components/userBalance/UserBalance';
 
 export const Mine = () => {
   const {data} = useSelector((state) => state.user);
@@ -63,18 +66,9 @@ export const Mine = () => {
   }, [brandTypes, getUserBrandByTypeId]);
 
   return (
-    <div className={'align-self-start flex-fill'}>
-      <Row className={'my-3'}>
-        <Col>
-          <h1 className={'text-center m-0'}>
-            <FontAwesomeIcon
-              icon={'coins'}
-              className={'me-1'}
-            />
-            {data.totalScores}
-          </h1>
-        </Col>
-      </Row>
+    <div className={'mine align-self-start flex-fill'}>
+      <UserBalance/>
+
       <Row
         className="g-2 flex-fill"
         xs={2}
@@ -113,15 +107,16 @@ export const Mine = () => {
 
               <Row className={'mt-auto'}>
                 <Col xs={12}>
-                  <Card.Footer className={'text-center'}>
+                  <Card.Footer>
                     <Button
+                      className={'d-flex align-items-center m-auto'}
                       variant={'success'}
                       disabled={brand.price > data.totalScores}
                       onClick={() => handleClick(brand)}
                     >
-                      <FontAwesomeIcon
-                        icon={'coins'}
-                        className={'me-1'}
+                      <img
+                        className="coin img me-2"
+                        src={IMAGES.coin}
                       />
 
                       {brand.price}
