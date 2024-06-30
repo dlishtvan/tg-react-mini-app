@@ -5,7 +5,7 @@ import './FloatingScores.scss';
 const FloatingScores = ({number, x, y, onAnimationEnd}) => {
   return (
     <div
-      className="floating-scores text-success"
+      className="floating-scores"
       style={{left: x, top: y, pointerEvents: 'none'}}
       onAnimationEnd={onAnimationEnd}
       onClick={(e) => e.preventDefault()}
