@@ -6,16 +6,15 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 const Footer = () => {
   return (
-    <footer className={'footer mt-auto py-2'}>
+    <footer className={'footer w-100 py-2 position-fixed bottom-0'}>
       <div className={'container'}>
-        <Row className={'justify-content-center'}>
-          <Col xs={10} md={6}>
+        <Row className={'justify-content-center px-3'}>
+          <Col xs={12} md={6}>
             <ButtonGroup aria-label="Basic example" className={'d-flex'}>
               <Button
                 as={NavLink}
                 to={ROUTES.Root}
-                variant="outline-primary"
-                className={'w-100'}
+                variant="primary"
               >
                 <FontAwesomeIcon icon={'house-user'}/>
                 <p className={'m-0'}>
@@ -26,8 +25,7 @@ const Footer = () => {
               <Button
                 as={NavLink}
                 to={ROUTES.Mine}
-                variant="outline-primary"
-                className={'w-100'}
+                variant="primary"
               >
                 <FontAwesomeIcon icon={'hand-holding-dollar'}/>
                 <p className={'m-0'}>
@@ -38,8 +36,7 @@ const Footer = () => {
               <Button
                 as={NavLink}
                 to={ROUTES.Statistic}
-                variant="outline-primary"
-                className={'w-100'}
+                variant="primary"
               >
                 <FontAwesomeIcon icon={'chart-simple'}/>
                 <p className={'m-0'}>
@@ -50,8 +47,7 @@ const Footer = () => {
               <Button
                 as={NavLink}
                 to={ROUTES.LeadersBoard}
-                variant="outline-primary"
-                className={'w-100'}
+                variant="primary"
               >
                 <FontAwesomeIcon icon={'trophy'}/>
 

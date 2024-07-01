@@ -8,7 +8,7 @@ export const Main = () => {
     <>
       <Header/>
 
-      <main className={'container d-flex flex-grow-1'}>
+      <main className={'container d-flex flex-grow-1 main'}>
         <Outlet/>
       </main>
 
