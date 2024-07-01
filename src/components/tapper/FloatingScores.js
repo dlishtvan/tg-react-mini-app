@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './FloatingScores.scss';
 
 // eslint-disable-next-line react/prop-types
@@ -10,7 +10,7 @@ const FloatingScores = ({number, x, y, onAnimationEnd}) => {
       onAnimationEnd={onAnimationEnd}
       onClick={(e) => e.preventDefault()}
     >
-      +{number}
+      <span>+{number}</span>
     </div>
   );
 };

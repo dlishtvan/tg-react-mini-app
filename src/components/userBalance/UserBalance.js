@@ -8,7 +8,7 @@ const UserBalance = () => {
   const {data} = useSelector((state) => state.user);
 
   return (
-    <Row className={'my-5'}>
+    <Row className={'mb-3'}>
       <Col>
         <div className="user-balance d-flex align-items-center justify-content-center">
           <img
